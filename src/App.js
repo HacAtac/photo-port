@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import About from "./components/About";
 import Nav from "./components/Nav";
 import Gallery from "./components/Gallery";
+// import PhotoList from "./components/PhotoList";
 
 //state is a piece of data that is maintained by the application
 // it could be anything, but it is usually an object
@@ -44,8 +45,8 @@ function App() {
         currentCategory={currentCategory}
       ></Nav>
       <main>
-        <Gallery />
-        <About />
+        <Gallery currentCategory={currentCategory}></Gallery>
+        <About></About>
       </main>
     </div>
   );
