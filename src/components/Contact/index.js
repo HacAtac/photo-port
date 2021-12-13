@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validateEmail } from "../../utils/helpers";
 
 function ContactForm() {
   const [formState, setFormState] = useState({
@@ -13,11 +14,32 @@ function ContactForm() {
     message: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState(""); //this is the state of the error message
+
   const { name, email, message } = formState; //this line of code is known as destructuring the formState object and assigning the values to the variables name, email, and message
   // were using it here to make the code more readable and easier to understand so we can use the variables in the form fields
 
   function handleChange(e) {
-    setFormState({ ...formState, [e.target.name]: e.target.value }); //this is the same as formState.name = e.target.value;
+    if (e.target.name === "email") {
+      const isValid = validateEmail(e.target.value);
+      //   console.log(isValid);
+      if (!isValid) {
+        setErrorMessage("Please enter a valid email address");
+      } else {
+        setErrorMessage("");
+      }
+    } else {
+      if (!e.target.value.length) {
+        setErrorMessage(`${e.target.name} is required`);
+      } else {
+        setErrorMessage("");
+      }
+      //   console.log("errorMessage", errorMessage);
+    }
+    if (!errorMessage) {
+      setFormState({ ...formState, [e.target.name]: e.target.value }); //this is the same as formState.name = e.target.value;
+      console.log("Handle Form", formState);
+    }
   }
   //   console.log(formState);
   return (
@@ -29,7 +51,7 @@ function ContactForm() {
           <input
             type="text"
             name="name"
-            onChange={handleChange}
+            onBlur={handleChange}
             defaultValue={name}
           />
         </div>
@@ -38,7 +60,7 @@ function ContactForm() {
           <input
             type="email"
             name="email"
-            onChange={handleChange}
+            onBlur={handleChange}
             defaultValue={email}
           />
         </div>
@@ -47,10 +69,15 @@ function ContactForm() {
           <textarea
             name="message"
             rows="5"
-            onChange={handleChange}
-            defaultVale={message}
+            onBlur={handleChange}
+            defaultValue={message}
           />
         </div>
+        {errorMessage && (
+          <div>
+            <p className="error-text">{errorMessage}</p>
+          </div>
+        )}
         <button type="submit">Send</button>
       </form>
     </section>

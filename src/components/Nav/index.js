@@ -3,7 +3,13 @@ import { capitalizeFirstLetter } from "../../utils/helpers";
 
 function Nav(props) {
   //what is currentCategory here? It is the value of the current category in the state or in easier words, the value of the current category in the state is the value of the current category in the state
-  const { categories = [], setCurrentCategory, currentCategory } = props; //this is easy words to understand if you are new to react and you are not familiar with the syntax of destructuring
+  const {
+    categories = [],
+    setCurrentCategory,
+    currentCategory,
+    contactSelected,
+    setContactSelected,
+  } = props; //this is easy words to understand if you are new to react and you are not familiar with the syntax of destructuring
   //will be used to set the current category and to pass it to the parent component as a prop called currentCategory
   //and will be used to set the current category in the parent component as a prop called setCurrentCategory
   //then the parent component will be able to set the current category in the state of the app
@@ -35,23 +41,30 @@ function Nav(props) {
       <nav>
         <ul className="flex-row">
           <li className="mx-2">
-            <a data-testid="about" href="#about">
+            <a
+              data-testid="about"
+              href="#about"
+              onClick={() => setContactSelected(false)} //when the user clicks on the about link, the contactSelected in the state of the app will be set to false
+            >
               About me
             </a>
           </li>
-          <li className="mx-2">
-            <span>Contact</span>
+          <li className={`mx-2 ${contactSelected && "navActive"}`}>
+            <span onClick={() => setContactSelected(true)}>Contact</span>
           </li>
           {categories.map((category) => (
             <li
               className={`mx-1 ${
-                currentCategory.name === category.name && "navActive"
+                currentCategory.name === category.name &&
+                !contactSelected &&
+                "navActive"
               }`}
               key={category.name}
             >
               <span
                 onClick={() => {
                   setCurrentCategory(category); //this will trigger the setCurrentCategory hook in app.js
+                  setContactSelected(false); // when user clicks on a category, the contactSelected in the state of the app will be set to false
                 }}
               >
                 {capitalizeFirstLetter(category.name)}
