@@ -130,12 +130,16 @@ const PhotoList = ({ category }) => {
   const toggleModal = (image, i) => {
     // were using the toggleModal function to open the modal when the user clicks on the image or the button
     setCurrentPhoto({ ...image, index: i }); //were changing the state of the currentPhoto to the image that was clicked
-    setIsModalOpen(!isModalOpen); //were changing the state of the isModalOpen to true
+    setIsModalOpen(!isModalOpen); //essentialy were changing the state of the isModalOpen to open or close the modal
   };
 
   return (
     <div>
       {isModalOpen && (
+        // were passing a prop to the Modal component that is the currentPhoto object that was clicked
+        // basically using a ternary operator to check if the isModalOpen state is true or false and then render the Modal component
+        // by passing the currentPhoto object as a prop to the Modal component
+        // and then passing the isModalOpen state as a prop to the Modal component
         <Modal onClose={toggleModal} currentPhoto={currentPhoto} />
       )}
       <div className="flex-row">
